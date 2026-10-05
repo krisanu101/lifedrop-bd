@@ -6,7 +6,7 @@ blood banks across Bangladesh. It's built to demonstrate a complete, production-
 relational database design (triggers, stored procedures, views, transactions, indexing,
 audit logging) alongside a working Flask web application on top of it.
 
----
+
 
 ## Features
 
@@ -36,9 +36,8 @@ audit logging) alongside a working Flask web application on top of it.
 - **Indexes** — on blood group / area / status columns used in every search
 - **Audit log** — every donor change and request approval is recorded automatically
 
-See [`ER_DIAGRAM.md`](ER_DIAGRAM.md) for the full schema diagram and normalization notes.
 
----
+
 
 ## 🗂️ Project Structure
 
@@ -80,7 +79,6 @@ lifedrop-bd/
   interruptible steps — a common real-world bug in systems that check-then-update without
   a transaction (race conditions, overselling stock, etc.).
 
----
 
 ## Tech Stack
 
