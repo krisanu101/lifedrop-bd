@@ -42,9 +42,7 @@ audit logging) alongside a working Flask web application on top of it.
 ## 🗂️ Project Structure
 
 ```
-lifedrop-bd/
-├── start.bat                 
-├── start.sh                 
+lifedrop-bd/                 
 ├── README.md
 ├── ER_DIAGRAM.md             # ER diagram (Mermaid) + normalization notes
 ├── CV_AND_INTERVIEW_GUIDE.md # CV bullet points + interview Q&A (Bangla)
