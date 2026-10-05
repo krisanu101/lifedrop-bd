@@ -44,8 +44,6 @@ audit logging) alongside a working Flask web application on top of it.
 ```
 lifedrop-bd/                 
 ├── README.md
-├── ER_DIAGRAM.md             # ER diagram (Mermaid) + normalization notes
-├── CV_AND_INTERVIEW_GUIDE.md # CV bullet points + interview Q&A (Bangla)
 ├── database/                 # SQL — run once, or let start.bat/start.sh do it
 │   ├── 01_schema.sql         # Tables, constraints, indexes
 │   ├── 02_triggers.sql       # All triggers
