@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Manage Inventory - LifeDrop BD{% endblock %}
+{% block content %}
+
+<h3 class="mb-4">Manage Inventory</h3>
+
+<div class="card card-body shadow-sm mb-4">
+  <h5>Set / Update Stock</h5>
+  <form method="POST" action="{{ url_for('update_inventory') }}" class="row g-3">
+    <div class="col-md-4">
+      <label class="form-label">Blood Bank</label>
+      <select name="bank_id" class="form-select" required>
+        {% for b in banks %}<option value="{{ b.bank_id }}">{{ b.name }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Blood Group</label>
+      <select name="blood_group" class="form-select" required>
+        {% for g in blood_groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Units Available</label>
+      <input type="number" name="units_available" min="0" class="form-control" required>
+    </div>
+    <div class="col-md-1 d-flex align-items-end">
+      <button class="btn btn-danger w-100">Set</button>
+    </div>
+  </form>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>Bank</th><th>Area</th><th>Blood Group</th><th>Units</th><th>Updated</th></tr></thead>
+    <tbody>
+      {% for row in rows %}
+      <tr class="{{ 'table-danger' if row.units_available < 3 else '' }}">
+        <td>{{ row.bank_name }}</td>
+        <td>{{ row.area }}</td>
+        <td><span class="badge bg-danger">{{ row.blood_group }}</span></td>
+        <td>{{ row.units_available }}</td>
+        <td>{{ row.updated_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}LifeDrop BD - Home{% endblock %}
+{% block content %}
+
+<div class="p-5 mb-4 rounded-3 text-white" style="background: linear-gradient(135deg,#b91c1c,#7f1d1d);">
+  <h1 class="display-6 fw-bold">One drop can save a life.</h1>
+  <p class="col-md-8 fs-5">LifeDrop BD connects blood donors, recipients and blood banks across
+    Bangladesh in one place — search compatible donors, request blood in an emergency, and track
+    donations, all backed by a proper relational database.</p>
+  <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-2">Become a Donor</a>
+  <a href="{{ url_for('request_blood') }}" class="btn btn-outline-light btn-lg">Request Blood</a>
+</div>
+
+<div class="row text-center g-3 mb-5">
+  <div class="col-md-3">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="text-danger">{{ stats.total_donors }}</h2><p class="mb-0">Registered Donors</p>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="text-danger">{{ stats.total_banks }}</h2><p class="mb-0">Partner Blood Banks</p>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="text-danger">{{ stats.total_donations }}</h2><p class="mb-0">Donations Recorded</p>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm h-100"><div class="card-body">
+      <h2 class="text-danger">{{ stats.pending_requests }}</h2><p class="mb-0">Pending Requests</p>
+    </div></div>
+  </div>
+</div>
+
+<div class="row g-4 mb-5">
+  <div class="col-md-4">
+    <h5>1. Register</h5>
+    <p class="text-muted">Sign up as a donor with your blood group and area. You'll be
+      shown to recipients in your locality once you're eligible.</p>
+  </div>
+  <div class="col-md-4">
+    <h5>2. Search or Request</h5>
+    <p class="text-muted">Search compatible, eligible donors near you, or submit a blood
+      request that our team / blood banks will review.</p>
+  </div>
+  <div class="col-md-4">
+    <h5>3. Donate & Track</h5>
+    <p class="text-muted">Log your donations and see your history. Inventory across blood
+      banks updates automatically as donations and requests are processed.</p>
+  </div>
+</div>
+
+{% endblock %}

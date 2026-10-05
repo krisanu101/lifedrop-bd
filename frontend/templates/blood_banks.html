@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Blood Banks - LifeDrop BD{% endblock %}
+{% block content %}
+
+<h3 class="mb-4">Blood Bank Directory</h3>
+
+<div class="row g-3 mb-5">
+  {% for b in banks %}
+  <div class="col-md-6 col-lg-3">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ b.name }}</h5>
+        <p class="card-text text-muted mb-1">{{ b.area }}, {{ b.district }}</p>
+        <p class="card-text">📞 {{ b.contact }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<h4 class="mb-3">Current Inventory (all banks)</h4>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>Bank</th><th>Area</th><th>Blood Group</th><th>Units Available</th><th>Last Updated</th></tr></thead>
+    <tbody>
+      {% for row in inventory %}
+      <tr class="{{ 'table-danger' if row.units_available < 3 else '' }}">
+        <td>{{ row.bank_name }}</td>
+        <td>{{ row.area }}</td>
+        <td><span class="badge bg-danger">{{ row.blood_group }}</span></td>
+        <td>{{ row.units_available }}</td>
+        <td>{{ row.updated_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

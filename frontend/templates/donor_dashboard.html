@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard - LifeDrop BD{% endblock %}
+{% block content %}
+
+<h3 class="mb-4">My Dashboard</h3>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ donor.name }}</h5>
+        <p class="mb-1">🩸 Blood Group: <strong>{{ donor.blood_group }}</strong></p>
+        <p class="mb-1">📍 Area: {{ donor.area }}, {{ donor.district }}</p>
+        <p class="mb-1">📞 {{ donor.phone }}</p>
+        <p class="mb-1">✉️ {{ donor.email }}</p>
+        <p class="mb-1">Total Donations: <strong>{{ donor.total_donations }}</strong></p>
+        <p class="mb-0">Last Donation: {{ donor.last_donation_date or "Never" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Log a New Donation</h5>
+        <form method="POST" action="{{ url_for('log_donation') }}" class="row g-3">
+          <div class="col-md-5">
+            <label class="form-label">Blood Bank</label>
+            <select name="bank_id" class="form-select" required>
+              {% for b in banks %}<option value="{{ b.bank_id }}">{{ b.name }}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Units</label>
+            <input type="number" name="units" value="1" min="1" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Date</label>
+            <input type="date" name="donation_date" class="form-control">
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-danger">Log Donation</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <h5>Donation History</h5>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead><tr><th>Date</th><th>Blood Bank</th><th>Units</th></tr></thead>
+        <tbody>
+          {% for h in history %}
+          <tr><td>{{ h.donation_date }}</td><td>{{ h.bank_name }}</td><td>{{ h.units }}</td></tr>
+          {% else %}
+          <tr><td colspan="3" class="text-muted">No donations logged yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Manage Requests - LifeDrop BD{% endblock %}
+{% block content %}
+
+<h3 class="mb-4">Manage Blood Requests</h3>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead><tr>
+      <th>Requester</th><th>Phone</th><th>Group</th><th>Units</th><th>Hospital</th>
+      <th>Urgency</th><th>Bank</th><th>Status</th><th>Actions</th>
+    </tr></thead>
+    <tbody>
+      {% for r in requests %}
+      <tr class="{{ 'table-danger' if r.urgency == 'emergency' and r.status == 'pending' else '' }}">
+        <td>{{ r.requester_name }}</td>
+        <td>{{ r.requester_phone }}</td>
+        <td><span class="badge bg-danger">{{ r.blood_group }}</span></td>
+        <td>{{ r.units_needed }}</td>
+        <td>{{ r.hospital }}</td>
+        <td>
+          {% if r.urgency == 'emergency' %}
+            <span class="badge bg-danger">EMERGENCY</span>
+          {% else %}
+            <span class="badge bg-secondary">Normal</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if r.bank_name %}
+            {{ r.bank_name }}
+          {% elif r.status == 'pending' %}
+            <form method="POST" action="{{ url_for('assign_bank', request_id=r.request_id) }}" class="d-flex gap-1">
+              <select name="bank_id" class="form-select form-select-sm" required>
+                <option value="">select bank</option>
+                {% for b in banks %}<option value="{{ b.bank_id }}">{{ b.name }}</option>{% endfor %}
+              </select>
+              <button class="btn btn-sm btn-outline-secondary">Set</button>
+            </form>
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td>
+          <span class="badge
+            {% if r.status == 'pending' %}bg-warning text-dark
+            {% elif r.status in ['approved','fulfilled'] %}bg-success
+            {% else %}bg-secondary{% endif %}">
+            {{ r.status }}
+          </span>
+        </td>
+        <td class="text-nowrap">
+          {% if r.status == 'pending' %}
+          <form method="POST" action="{{ url_for('approve_request', request_id=r.request_id) }}" class="d-inline">
+            <button class="btn btn-sm btn-success">Approve</button>
+          </form>
+          <form method="POST" action="{{ url_for('reject_request', request_id=r.request_id) }}" class="d-inline">
+            <button class="btn btn-sm btn-outline-danger">Reject</button>
+          </form>
+          {% else %}
+          <span class="text-muted small">resolved</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="9" class="text-muted">No requests yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<p class="text-muted small">Approving a request runs <code>sp_approve_request</code>, which checks
+stock and deducts inventory inside a single database transaction — if there isn't enough stock,
+nothing changes and you'll see an error message instead.</p>
+
+{% endblock %}

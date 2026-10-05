@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Manage Donors - LifeDrop BD{% endblock %}
+{% block content %}
+
+<h3 class="mb-4">Manage Donors</h3>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover">
+    <thead><tr>
+      <th>Name</th><th>Phone</th><th>Blood Group</th><th>Area</th>
+      <th>Last Donation</th><th>Total Donations</th><th>Eligibility</th><th></th>
+    </tr></thead>
+    <tbody>
+      {% for d in donors %}
+      <tr>
+        <td>{{ d.name }}</td>
+        <td>{{ d.phone }}</td>
+        <td><span class="badge bg-danger">{{ d.blood_group }}</span></td>
+        <td>{{ d.area }}, {{ d.district }}</td>
+        <td>{{ d.last_donation_date or "Never" }}</td>
+        <td>{{ d.total_donations }}</td>
+        <td>
+          <span class="badge {{ 'bg-success' if 'Eligible' in d.eligibility_status else 'bg-secondary' }}">
+            {{ d.eligibility_status }}
+          </span>
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('delete_donor', donor_id=d.donor_id) }}"
+                onsubmit="return confirm('Remove this donor?');">
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="8" class="text-muted">No donors registered yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

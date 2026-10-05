@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Request Blood - LifeDrop BD{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+<div class="col-md-7">
+  <h3 class="mb-4">Request Blood</h3>
+  <form method="POST" class="card card-body shadow-sm">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Your Name</label>
+        <input type="text" name="requester_name" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Phone</label>
+        <input type="text" name="requester_phone" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Blood Group Needed</label>
+        <select name="blood_group" class="form-select" required>
+          {% for g in blood_groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Units Needed</label>
+        <input type="number" name="units_needed" min="1" value="1" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Urgency</label>
+        <select name="urgency" class="form-select">
+          <option value="normal">Normal</option>
+          <option value="emergency">Emergency</option>
+        </select>
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">Hospital</label>
+        <input type="text" name="hospital" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Preferred Blood Bank (optional)</label>
+        <select name="bank_id" class="form-select">
+          <option value="">-- not sure --</option>
+          {% for b in banks %}<option value="{{ b.bank_id }}">{{ b.name }} ({{ b.area }})</option>{% endfor %}
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-danger mt-4">Submit Request</button>
+  </form>
+</div>
+</div>
+
+{% endblock %}

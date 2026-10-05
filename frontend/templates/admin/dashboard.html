@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - LifeDrop BD{% endblock %}
+{% block content %}
+
+<h3 class="mb-4">Admin Dashboard</h3>
+
+<div class="row text-center g-3 mb-4">
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <h2 class="text-danger">{{ totals.donors }}</h2><p class="mb-0">Donors</p></div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <h2 class="text-danger">{{ totals.banks }}</h2><p class="mb-0">Blood Banks</p></div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <h2 class="text-warning">{{ totals.pending }}</h2><p class="mb-0">Pending Requests</p></div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm border-danger"><div class="card-body">
+    <h2 class="text-danger">{{ totals.emergency }}</h2><p class="mb-0">Emergency (pending)</p></div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="card shadow-sm"><div class="card-body">
+      <h5>Donors by Blood Group</h5>
+      <canvas id="groupChart" height="200"></canvas>
+    </div></div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm"><div class="card-body">
+      <h5>Requests by Blood Group</h5>
+      <canvas id="requestChart" height="200"></canvas>
+    </div></div>
+  </div>
+</div>
+
+<div class="d-flex gap-3 mb-5">
+  <a href="{{ url_for('manage_donors') }}" class="btn btn-outline-danger">Manage Donors</a>
+  <a href="{{ url_for('manage_requests') }}" class="btn btn-outline-danger">Manage Requests</a>
+  <a href="{{ url_for('manage_inventory') }}" class="btn btn-outline-danger">Manage Inventory</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+const groupLabels = {{ group_distribution | map(attribute='blood_group') | list | tojson }};
+const groupData = {{ group_distribution | map(attribute='total') | list | tojson }};
+new Chart(document.getElementById('groupChart'), {
+  type: 'bar',
+  data: { labels: groupLabels, datasets: [{ label: 'Donors', data: groupData, backgroundColor: '#b91c1c' }] },
+  options: { plugins: { legend: { display: false } } }
+});
+
+const reqLabels = {{ request_summary | map(attribute='blood_group') | list | tojson }};
+const reqData = {{ request_summary | map(attribute='total_requests') | list | tojson }};
+new Chart(document.getElementById('requestChart'), {
+  type: 'doughnut',
+  data: { labels: reqLabels, datasets: [{ data: reqData,
+    backgroundColor: ['#b91c1c','#dc2626','#ef4444','#f87171','#fca5a5','#fecaca','#fee2e2','#7f1d1d'] }] }
+});
+</script>
+
+{% endblock %}

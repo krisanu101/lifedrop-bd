@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Search Donors - LifeDrop BD{% endblock %}
+{% block content %}
+
+<h3 class="mb-4">Search Compatible, Eligible Donors</h3>
+
+<form method="POST" class="row g-3 card card-body shadow-sm mb-4">
+  <div class="col-md-4">
+    <label class="form-label">Recipient's Blood Group (who needs blood)</label>
+    <select name="blood_group" class="form-select" required>
+      <option value="">-- select --</option>
+      {% for g in blood_groups %}
+        <option value="{{ g }}" {% if g == selected_group %}selected{% endif %}>{{ g }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Area (optional)</label>
+    <select name="area" class="form-select">
+      <option value="">-- any area --</option>
+      {% for a in areas %}
+        <option value="{{ a }}" {% if a == selected_area %}selected{% endif %}>{{ a }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4 d-flex align-items-end">
+    <button type="submit" class="btn btn-danger w-100">Search Donors</button>
+  </div>
+</form>
+
+{% if results is not none %}
+  <h5>{{ results|length }} compatible donor(s) found</h5>
+  {% if results %}
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead><tr>
+        <th>Name</th><th>Phone</th><th>Blood Group</th><th>Area</th><th>District</th><th>Last Donation</th>
+      </tr></thead>
+      <tbody>
+        {% for d in results %}
+        <tr>
+          <td>{{ d.name }}</td><td>{{ d.phone }}</td>
+          <td><span class="badge bg-danger">{{ d.blood_group }}</span></td>
+          <td>{{ d.area }}</td><td>{{ d.district }}</td>
+          <td>{{ d.last_donation_date or "Never donated" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="alert alert-info">No eligible, compatible donors found for this group/area right now.</div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}
