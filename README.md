@@ -64,18 +64,6 @@ lifedrop-bd/
         └── css/style.css
 ```
 
-## Why two separate scenarios exist in the code
-
-- `sp_find_compatible_donors` filters by **both** blood-group compatibility (via the
-  `blood_compatibility` lookup table) **and** eligibility (≥90 days since last donation),
-  so the search results are people who can actually donate right now — not just a
-  blood-group match.
-- `sp_approve_request` is wrapped in an explicit `START TRANSACTION` / `COMMIT` /
-  `ROLLBACK` so that "check stock" and "deduct stock" can never happen as two separate,
-  interruptible steps — a common real-world bug in systems that check-then-update without
-  a transaction (race conditions, overselling stock, etc.).
-
-
 ## Tech Stack
 
 Python (Flask) · MySQL · PyMySQL · Jinja2 · Bootstrap 5 · Chart.js
